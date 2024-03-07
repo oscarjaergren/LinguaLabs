@@ -1,0 +1,10 @@
+{
+	"profiles": {
+		"LinguaLabs.Windows (Unpackaged)": {
+			"commandName": "Project"
+		},
+		"LinguaLabs.Windows (Package)": {
+			"commandName": "MsixPackage"
+		}
+	}
+}
