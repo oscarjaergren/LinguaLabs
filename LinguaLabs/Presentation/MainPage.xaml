@@ -25,5 +25,19 @@
           AutomationProperties.AutomationId="SecondPageButton"
           Command="{Binding GoToSecond}" />
     </StackPanel>
+
+    <SwipeControl
+            x:Name="swipeControl"
+            ManipulationMode="TranslateX"
+            Completed="SwipeControl_Completed"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            AllowCrossSlide="True">
+      <!-- Your card content here -->
+      <Border Background="White" CornerRadius="8" Padding="16">
+        <TextBlock Text="Example Card Content" FontSize="24"/>
+      </Border>
+    </SwipeControl>
+
   </Grid>
 </Page>

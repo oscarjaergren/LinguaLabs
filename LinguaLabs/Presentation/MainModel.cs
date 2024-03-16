@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace LinguaLabs.Presentation;
 
 public partial record MainModel
@@ -23,6 +25,20 @@ public partial record MainModel
     {
         var name = await Name;
         await _navigator.NavigateViewModelAsync<SecondModel>(this, data: new Entity(name!));
+    }
+
+    // Handle swipe left action
+    // This method will be called when the user swipes the card to the left
+    public void OnSwipeLeft(object sender, EventArgs args)
+    {
+        Debug.WriteLine("Swiped left");
+    }
+
+    // Handle swipe right action
+    // This method will be called when the user swipes the card to the right
+    public void OnSwipeRight(object sender, EventArgs args)
+    {
+        Debug.WriteLine("Swiped Right");
     }
 
 }
