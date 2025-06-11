@@ -1,4 +1,5 @@
 using Uno.Resizetizer;
+using LinguaLabs.Features.Icons;
 
 namespace LinguaLabs;
 public partial class App : Application
@@ -10,10 +11,8 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-    }
-
-    protected Window? MainWindow { get; private set; }
-    protected IHost? Host { get; private set; }
+    }    protected Window? MainWindow { get; private set; }
+    public IHost? Host { get; private set; }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
@@ -66,11 +65,12 @@ public partial class App : Application
                         .Section<AppConfig>()
                 )
                 // Enable localization (see appsettings.json for supported languages)
-                .UseLocalization()
-                // Register Json serializers (ISerializer and ISerializer)
+                .UseLocalization()                // Register Json serializers (ISerializer and ISerializer)
                 .UseSerialization((context, services) => services
                     .AddContentSerializer(context)
-                    .AddJsonTypeInfo(WeatherForecastContext.Default.IImmutableListWeatherForecast))
+                    .AddJsonTypeInfo(WeatherForecastContext.Default.IImmutableListWeatherForecast)
+                    .AddJsonTypeInfo(IconContext.Default.IconifySearchResponse)
+                    .AddJsonTypeInfo(IconContext.Default.IImmutableListIconifyIcon))
                 .UseHttp((context, services) =>
                 {
 #if DEBUG
@@ -86,11 +86,12 @@ public partial class App : Application
                 })
                 .UseAuthentication(auth =>
     auth.AddWeb(name: "WebAuthentication")
-                )
-                .ConfigureServices((context, services) =>
+                )                .ConfigureServices((context, services) =>
                 {
                     // TODO: Register your services
                     //services.AddSingleton<IMyService, MyService>();
+                    services.AddSingleton<IIconifyService, IconifyService>();
+                    services.AddTransient<IconsModel>();
                 })
                 .UseNavigation(ReactiveViewModelMappings.ViewModelMappings, RegisterRoutes)
             );

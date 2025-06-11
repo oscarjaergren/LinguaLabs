@@ -22,9 +22,7 @@ public partial record MainModel
 
     public string? Title { get; }
 
-    public IState<string> Name => State<string>.Value(this, () => string.Empty);
-
-    public IState<int> Count => State<int>.Value(this, () => 0);
+    public IState<string> Name => State<string>.Value(this, () => string.Empty);    public IState<int> Count => State<int>.Value(this, () => 0);    public IState<string> SelectedIconId => State<string>.Value(this, () => string.Empty);
 
     public IFeed<string> CounterText => Count.Select(_currentCount => _currentCount switch
     {
@@ -33,20 +31,34 @@ public partial record MainModel
         _ => $"Pressed {_currentCount} times!"
     });
 
+    public IFeed<string> SelectedIconText => SelectedIconId.Select(iconId => string.IsNullOrEmpty(iconId) 
+        ? "No icon selected" 
+        : $"Selected: {iconId}");
+
     public async Task Counter(CancellationToken ct) =>
-        await Count.Update(x => ++x, ct);
-
-    public async Task SetIconCommand()
+        await Count.Update(x => ++x, ct);    public async Task SetIconCommand()
     {
-        //var list = await Entity;
-        //if (list is null)
-        //{
-        //    return;
-        //}
-
-        var taskName = await _navigator.GetDataAsync<IconsModel, string>(this, qualifier: Qualifiers.Dialog);
-
-        await _navigator.ShowMessageDialogAsync<IconsDialog>(this);
+        try
+        {
+            // Create and show the icons dialog
+            var dialog = new IconsDialog();
+            
+            // Show the dialog and wait for result
+            var result = await dialog.ShowAsync();            if (result == ContentDialogResult.Primary && dialog.SelectedIcon != null)
+            {
+                // Handle the selected icon
+                var selectedIcon = dialog.SelectedIcon;
+                
+                // Update the state with the selected icon ID
+                await SelectedIconId.Update(_ => selectedIcon.Id, CancellationToken.None);
+                
+                Debug.WriteLine($"Selected icon: {selectedIcon.Name} from {selectedIcon.Set}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Error showing icon dialog: {ex.Message}");
+        }
     }
 
     //public IState<Card> Entity { get; }

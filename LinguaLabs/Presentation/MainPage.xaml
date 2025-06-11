@@ -14,8 +14,6 @@
      NavigationCacheMode="Required"
      d:DataContext="{d:DesignInstance Type=local:MainModel, IsDesignTimeCreatable=True}"
      Background="{ThemeResource BackgroundBrush}">
-
-
     <StackPanel>
         <!-- OutlinedCardStyle -->
         <utu:Card HeaderContent="Outlined card"
@@ -27,6 +25,12 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Margin="16" />
+
+        <!-- Display selected icon -->
+        <TextBlock Text="{Binding SelectedIconText}"
+                   HorizontalAlignment="Center"
+                   Margin="16"
+                   Style="{ThemeResource BodyTextBlockStyle}" />
     </StackPanel>
 
     <!--d:DataContext="{d:DesignInstance Type=local:MainModel, IsDesignTimeCreatable=True}"-->

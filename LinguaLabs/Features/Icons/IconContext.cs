@@ -17,5 +17,11 @@ namespace LinguaLabs.Features.Icons;
 [JsonSerializable(typeof(IEnumerable<IconifyIcon>))]
 [JsonSerializable(typeof(IImmutableList<IconifyIcon>))]
 [JsonSerializable(typeof(ImmutableList<IconifyIcon>))]
+[JsonSerializable(typeof(IconifySearchResponse))]
+[JsonSerializable(typeof(IconifyCollection))]
+[JsonSerializable(typeof(IconifyAuthor))]
+[JsonSerializable(typeof(IconifyLicense))]
+[JsonSerializable(typeof(IconifyRequest))]
+[JsonSerializable(typeof(Dictionary<string, IconifyCollection>))]
 [JsonSourceGenerationOptions(PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase)]
 public partial class IconContext : JsonSerializerContext;
