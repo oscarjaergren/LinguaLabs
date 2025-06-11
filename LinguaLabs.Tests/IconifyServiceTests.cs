@@ -3,11 +3,10 @@ using System.Text.Json;
 
 namespace LinguaLabs.Tests;
 
-[TestClass]
 public class IconifyServiceTests
 {
-    [TestMethod]
-    public void TestIconifySearchResponseDeserialization()
+    [Test]
+    public async Task TestIconifySearchResponseDeserialization()
     {
         // Sample response from Iconify API
         var json = """
@@ -46,11 +45,11 @@ public class IconifyServiceTests
 
         var response = JsonSerializer.Deserialize<IconifySearchResponse>(json, options);
 
-        Assert.IsNotNull(response);
-        Assert.AreEqual(3, response.Icons.Length);
-        Assert.AreEqual("mdi:fish", response.Icons[0]);
-        Assert.AreEqual("fish", response.Request.Query);
-        Assert.IsTrue(response.Collections.ContainsKey("mdi"));
-        Assert.AreEqual("Material Design Icons", response.Collections["mdi"].Name);
+        await Assert.That(response).IsNotNull();
+        await Assert.That(response!.Icons.Length).IsEqualTo(3);
+        await Assert.That(response.Icons[0]).IsEqualTo("mdi:fish");
+        await Assert.That(response.Request.Query).IsEqualTo("fish");
+        await Assert.That(response.Collections.ContainsKey("mdi")).IsTrue();
+        await Assert.That(response.Collections["mdi"].Name).IsEqualTo("Material Design Icons");
     }
 }

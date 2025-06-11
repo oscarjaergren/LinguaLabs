@@ -2,17 +2,19 @@ namespace LinguaLabs.Tests;
 
 public class AppInfoTests
 {
-    [SetUp]
-    public void Setup()
+    [Before(Test)]
+    public async Task Setup()
     {
+        // Setup code here
+        await Task.CompletedTask;
     }
 
     [Test]
-    public void AppInfoCreation()
+    public async Task AppInfoCreation()
     {
         var appInfo = new AppConfig { Environment = "Test" };
 
-        appInfo.Should().NotBeNull();
-        appInfo.Environment.Should().Be("Test");
+        await Assert.That(appInfo).IsNotNull();
+        await Assert.That(appInfo.Environment).IsEqualTo("Test");
     }
 }

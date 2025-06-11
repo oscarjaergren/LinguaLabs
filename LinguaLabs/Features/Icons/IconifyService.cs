@@ -7,6 +7,7 @@ public sealed class IconifyService(
     ) : IIconifyService
 {
     private readonly ISerializer _serializer = serializer;
+    
     private readonly ILogger _logger = logger;
 
     private static readonly HttpClient httpClient = new();
@@ -22,7 +23,9 @@ public sealed class IconifyService(
         {
             return string.Empty;
         }
-    }    public async ValueTask<IImmutableList<IconifyIcon>> Search(string searchTerm, CancellationToken ct)
+    }
+
+    public async ValueTask<IImmutableList<IconifyIcon>> Search(string searchTerm, CancellationToken ct)
     {
         if (string.IsNullOrWhiteSpace(searchTerm))
             return [];
@@ -31,24 +34,24 @@ public sealed class IconifyService(
         {
             var searchUrl = $"https://api.iconify.design/search?query={Uri.EscapeDataString(searchTerm)}";
             var response = await httpClient.GetStringAsync(searchUrl, ct);
-            
+
             var searchResponse = _serializer.FromString<IconifySearchResponse>(response);
-            
+
             // Convert the response to IconifyIcon objects
             var icons = new List<IconifyIcon>();
-            
+
             foreach (var iconId in searchResponse.Icons)
             {
                 // Parse icon ID (format: "collection:icon-name")
                 var parts = iconId.Split(':', 2);
                 if (parts.Length != 2) continue;
-                
+
                 var collectionKey = parts[0];
                 var iconName = parts[1];
-                
+
                 // Get collection info if available
                 var collection = searchResponse.Collections.GetValueOrDefault(collectionKey);
-                
+
                 icons.Add(new IconifyIcon
                 {
                     Id = iconId,
@@ -59,7 +62,7 @@ public sealed class IconifyService(
                     Emoji = "" // Iconify icons don't have emoji equivalents by default
                 });
             }
-            
+
             return icons.ToImmutableList();
         }
         catch (Exception ex)

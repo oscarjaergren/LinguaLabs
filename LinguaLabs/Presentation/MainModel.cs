@@ -38,26 +38,11 @@ public partial record MainModel
     public async Task Counter(CancellationToken ct) =>
         await Count.Update(x => ++x, ct);    public async Task SetIconCommand()
     {
-        try
+        // Get selected icon from the Icons flyout
+        var selectedIcon = await _navigator.GetDataAsync<IconsModel, IconifyIcon?>(this, qualifier: Qualifiers.Dialog);
+        if (selectedIcon != null)
         {
-            // Create and show the icons dialog
-            var dialog = new IconsDialog();
-            
-            // Show the dialog and wait for result
-            var result = await dialog.ShowAsync();            if (result == ContentDialogResult.Primary && dialog.SelectedIcon != null)
-            {
-                // Handle the selected icon
-                var selectedIcon = dialog.SelectedIcon;
-                
-                // Update the state with the selected icon ID
-                await SelectedIconId.Update(_ => selectedIcon.Id, CancellationToken.None);
-                
-                Debug.WriteLine($"Selected icon: {selectedIcon.Name} from {selectedIcon.Set}");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine($"Error showing icon dialog: {ex.Message}");
+            await SelectedIconId.Update(x => selectedIcon.Id, CancellationToken.None);
         }
     }
 
