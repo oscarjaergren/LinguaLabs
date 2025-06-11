@@ -1,0 +1,113 @@
+﻿<Flyout
+    x:Class="LinguaLabs.Features.Icons.Icons"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LinguaLabs.Features.Icons"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:uen="using:Uno.Extensions.Navigation.UI"
+    xmlns:uer="using:Uno.Extensions.Reactive.UI"
+    xmlns:utu="using:Uno.Toolkit.UI"
+    xmlns:utum="using:Uno.Toolkit.UI.Material"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    xmlns:um="using:Uno.Material"
+    xmlns:ut="using:Uno.Themes"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    mc:Ignorable="d"
+    d:DataContext="{d:DesignInstance Type=local:IconsModel, IsDesignTimeCreatable=True}"
+    Placement="Full"
+    LightDismissOverlayMode="On"
+    FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
+
+    <utu:AutoLayout utu:AutoLayout.PrimaryAlignment="Stretch">
+        
+        <utu:AutoLayout.Resources>
+            <DataTemplate x:Key="EmptyTemplate">
+                <utu:AutoLayout Background="{ThemeResource BackgroundBrush}">
+                    <utu:AutoLayout Padding="32,0"
+								utu:AutoLayout.PrimaryAlignment="Stretch"
+								PrimaryAxisAlignment="Center"
+								Spacing="24">
+                        <utu:AutoLayout Width="72"
+									Height="72"
+									utu:AutoLayout.CounterAlignment="Center">
+                            <utu:AutoLayout Margin="3,0,-3,0"
+										HorizontalAlignment="Stretch"
+										VerticalAlignment="Stretch"
+										utu:AutoLayout.IsIndependentLayout="True"
+										PrimaryAxisAlignment="Center">
+                                <BitmapIcon Width="72"
+										Height="72"
+										utu:AutoLayout.CounterAlignment="Center"
+										UriSource="{ThemeResource Empty_Box}" />
+                            </utu:AutoLayout>
+                        </utu:AutoLayout>
+                        <TextBlock Foreground="{ThemeResource OnSurfaceBrush}"
+							   Style="{StaticResource TitleLarge}"
+							   Text="No Results Found"
+							   TextAlignment="Center"
+							   TextWrapping="Wrap" />
+                        <TextBlock Foreground="{ThemeResource OnSurfaceBrush}"
+							   Style="{StaticResource TitleMedium}"
+							   Text="We couldn't find any icons matching your search"
+							   TextAlignment="Center"
+							   TextWrapping="Wrap" />
+                    </utu:AutoLayout>
+                </utu:AutoLayout>
+            </DataTemplate>
+
+            <muxc:UniformGridLayout x:Key="ResponsiveGridLayout"
+								ItemsStretch="Fill"
+								MaximumRowsOrColumns="{utu:Responsive Normal=2,
+																	  Wide=8}"
+								MinColumnSpacing="{utu:Responsive Normal=8,
+																  Wide=16}"
+								MinItemWidth="{utu:Responsive Normal=155,
+															  Wide=240}"
+								MinRowSpacing="{utu:Responsive Normal=8,
+															   Wide=16}" />
+        </utu:AutoLayout.Resources>
+        
+        <utu:AutoLayout Padding="{utu:Responsive Normal='16,24',
+												 Wide='40,40,40,24'}"
+						PrimaryAxisAlignment="Center"
+						Spacing="24">
+            <TextBox utu:CommandExtensions.Command="{Binding Search}"
+					 CornerRadius="28"
+					 PlaceholderText="Search"
+					 Text="{Binding Term, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <ut:ControlExtensions.Icon>
+                    <PathIcon Data="{StaticResource Icon_Search}"
+							  Foreground="{ThemeResource OnSurfaceMediumBrush}" />
+                </ut:ControlExtensions.Icon>
+            </TextBox>
+
+            <utu:AutoLayout Justify="SpaceBetween"
+							Orientation="Horizontal"
+							CounterAxisAlignment="Center">
+                <TextBlock Style="{StaticResource BodyLarge}"
+						   Text="{Binding Results.Count, Converter={StaticResource StringFormatter}, ConverterParameter='{}{0} results', UpdateSourceTrigger=PropertyChanged}" />
+            </utu:AutoLayout>
+        </utu:AutoLayout>
+
+        <uer:FeedView x:Name="SearchFeed"
+					  NoneTemplate="{StaticResource EmptyTemplate}"
+					  utu:AutoLayout.PrimaryAlignment="Stretch"
+					  Source="{Binding Results}">
+            <DataTemplate>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                    <muxc:ItemsRepeater x:Name="SearchRepeater"
+										Margin="{utu:Responsive Normal='16,0,16,16',
+																Wide='40,0,40,40'}"
+										uen:Navigation.Request="RecipeDetails"
+										ItemTemplate="{StaticResource RecipeTemplate}"
+										ItemsSource="{Binding Data}"
+										Layout="{StaticResource ResponsiveGridLayout}" />
+                </ScrollViewer>
+
+            </DataTemplate>
+        </uer:FeedView>
+    </utu:AutoLayout>
+
+</Flyout>
+
+<!--Style="{StaticResource ChefsPrimaryTextBoxStyle}"-->
