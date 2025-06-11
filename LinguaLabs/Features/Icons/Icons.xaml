@@ -1,5 +1,6 @@
 ﻿<Flyout
     x:Class="LinguaLabs.Features.Icons.Icons"
+    x:Name="IconsFlyout"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LinguaLabs.Features.Icons"
@@ -16,11 +17,7 @@
     d:DataContext="{d:DesignInstance Type=local:IconsModel, IsDesignTimeCreatable=True}"
     Placement="Full"
     LightDismissOverlayMode="On"
-    FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">
-
-    <utu:AutoLayout utu:AutoLayout.PrimaryAlignment="Stretch">
-        
-        <utu:AutoLayout.Resources>
+    FlyoutPresenterStyle="{StaticResource FlyoutPresenterStyle}">    <utu:AutoLayout utu:AutoLayout.PrimaryAlignment="Stretch">        <utu:AutoLayout.Resources>
             <DataTemplate x:Key="EmptyTemplate">
                 <utu:AutoLayout Background="{ThemeResource BackgroundBrush}">
                     <utu:AutoLayout Padding="32,0"
@@ -53,26 +50,56 @@
 							   TextWrapping="Wrap" />
                     </utu:AutoLayout>
                 </utu:AutoLayout>
+            </DataTemplate>            <DataTemplate x:Key="IconTemplate" x:DataType="local:IconifyIcon">
+                <Button Background="Transparent"
+                        BorderThickness="0"
+                        Padding="0"
+                        Click="IconButton_Click"
+                        Tag="{Binding}">
+                    <Border Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                            CornerRadius="8"
+                            Padding="12"
+                            Margin="4">                        <utu:AutoLayout Spacing="8"
+                                        PrimaryAxisAlignment="Center"
+                                        CounterAxisAlignment="Center">                            <!-- Icon Display -->
+                            <local:IconDisplay Icon="{Binding}"
+                                               x:Name="IconDisplayControl" />
+
+                            <!-- Icon Info -->
+                            <utu:AutoLayout Spacing="2" CounterAxisAlignment="Center">
+                                <TextBlock Text="{Binding Name}"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           TextAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           MaxLines="1" />
+                                <TextBlock Text="{Binding Set}"
+                                           Style="{StaticResource Caption2TextBlockStyle}"
+                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                                           TextAlignment="Center"
+                                           TextTrimming="CharacterEllipsis"
+                                           MaxLines="1" />
+                            </utu:AutoLayout>
+                        </utu:AutoLayout>
+                    </Border>
+                </Button>
             </DataTemplate>
 
             <muxc:UniformGridLayout x:Key="ResponsiveGridLayout"
 								ItemsStretch="Fill"
-								MaximumRowsOrColumns="{utu:Responsive Normal=2,
-																	  Wide=8}"
+								MaximumRowsOrColumns="{utu:Responsive Normal=3,
+																	  Wide=6}"
 								MinColumnSpacing="{utu:Responsive Normal=8,
 																  Wide=16}"
-								MinItemWidth="{utu:Responsive Normal=155,
-															  Wide=240}"
+								MinItemWidth="{utu:Responsive Normal=120,
+															  Wide=140}"
 								MinRowSpacing="{utu:Responsive Normal=8,
 															   Wide=16}" />
         </utu:AutoLayout.Resources>
-        
+
         <utu:AutoLayout Padding="{utu:Responsive Normal='16,24',
 												 Wide='40,40,40,24'}"
 						PrimaryAxisAlignment="Center"
-						Spacing="24">
-            <TextBox utu:CommandExtensions.Command="{Binding Search}"
-					 CornerRadius="28"
+						Spacing="24">            <TextBox CornerRadius="28"
 					 PlaceholderText="Search"
 					 Text="{Binding Term, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ut:ControlExtensions.Icon>
@@ -93,13 +120,11 @@
 					  NoneTemplate="{StaticResource EmptyTemplate}"
 					  utu:AutoLayout.PrimaryAlignment="Stretch"
 					  Source="{Binding Results}">
-            <DataTemplate>
-                <ScrollViewer VerticalScrollBarVisibility="Hidden">
+            <DataTemplate>                <ScrollViewer VerticalScrollBarVisibility="Hidden">
                     <muxc:ItemsRepeater x:Name="SearchRepeater"
 										Margin="{utu:Responsive Normal='16,0,16,16',
 																Wide='40,0,40,40'}"
-										uen:Navigation.Request="RecipeDetails"
-										ItemTemplate="{StaticResource RecipeTemplate}"
+										ItemTemplate="{StaticResource IconTemplate}"
 										ItemsSource="{Binding Data}"
 										Layout="{StaticResource ResponsiveGridLayout}" />
                 </ScrollViewer>
