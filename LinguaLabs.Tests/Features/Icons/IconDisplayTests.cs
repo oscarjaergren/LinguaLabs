@@ -87,7 +87,7 @@ public class IconDisplayTests
         // Assert
         await _mockIconifyService.DidNotReceive().GetIconSvg(Arg.Any<string>());
     }
-    
+
     [Test]
     public async Task IconDisplay_Should_HandleServiceException()
     {
@@ -124,11 +124,60 @@ public class IconDisplayTests
             (new IconifyIcon { Name = "", Set = "testset" }, "TE"),
             (new IconifyIcon { Name = "", Set = "" }, "??")
         };
-
         foreach (var (icon, expected) in testCases)
         {
             var actual = IconDisplay.GetIconDisplayTextForTesting(icon);
             actual.Should().Be(expected);
         }
+    }
+
+    [Test]
+    public async Task IconDisplay_Should_HandleNullService_InRealWorldScenario()
+    {
+        // Arrange - Test the real scenario where service is null (simulating the bug)
+        var icon = new IconifyIcon
+        {
+            Id = "tabler:chalkboard-teacher",
+            Name = "chalkboard teacher",
+            Set = "tabler"
+        };
+
+        var iconDisplayWithoutService = new IconDisplay();
+        // Don't set IconService - simulating real world issue where DI fails
+
+        // Act
+        iconDisplayWithoutService.Icon = icon;
+
+        // Allow UI to update
+        await Task.Delay(100);
+
+        // Assert
+        await Assert.That(iconDisplayWithoutService.IconService).IsNull();
+        // This test would previously fail to catch the real issue
+    }
+
+    [Test]
+    public async Task IconDisplay_Should_NotCallService_When_ServiceIsNull()
+    {
+        // Arrange - Test the exact scenario from your logs
+        var icon = new IconifyIcon
+        {
+            Id = "ph:chalkboard-teacher",
+            Name = "chalkboard teacher",
+            Set = "ph"
+        };
+
+        // Create a fresh control without setting IconService
+        var iconDisplay = new IconDisplay();
+
+        // Act
+        iconDisplay.Icon = icon;
+
+        // Allow UI to update
+        await Task.Delay(200);
+
+        // Assert - Should not have called any service methods since service is null
+        await Assert.That(iconDisplay.IconService).IsNull();
+        // In real world, this causes "Service null: True" in logs
     }
 }

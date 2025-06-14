@@ -1,8 +1,7 @@
 namespace LinguaLabs.UITests;
 
 public class Given_MainPage : TestBase
-{
-    [Test]
+{    [Test]
     public async Task When_SmokeTest()
     {
         // NOTICE

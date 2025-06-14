@@ -1,4 +1,6 @@
 
+using TUnit.Assertions;
+
 namespace LinguaLabs.UITests;
 
 public class TestBase
@@ -30,25 +32,33 @@ public class TestBase
         private set
         {
             _app = value;
-            Uno.UITest.Helpers.Queries.Helpers.App = value;
+            Helpers.App = value;
         }
     }
 
-    [SetUp]
+    [Before(Test)]
     public void SetUpTest()
     {
+
         App = AppInitializer.AttachToApp();
+
     }
 
-    [TearDown]
+    [After(Test)]
     public void TearDownTest()
     {
         TakeScreenshot("teardown");
     }
-
-    public FileInfo TakeScreenshot(string stepName)
+    
+    public FileInfo? TakeScreenshot(string stepName)
     {
-        var title = $"{TestContext.CurrentContext.Test.Name}_{stepName}"
+        if (_app == null)
+        {
+            Console.WriteLine($"Cannot take screenshot '{stepName}': App is not initialized");
+            return null;
+        }
+
+        var title = $"{TestContext.Current?.TestDetails.TestName ?? "UnknownTest"}_{stepName}"
             .Replace(" ", "_")
             .Replace(".", "_");
 
@@ -67,13 +77,15 @@ public class TestBase
 
             File.Move(fileInfo.FullName, destFileName);
 
-            TestContext.AddTestAttachment(destFileName, stepName);
+            // TUnit doesn't have AddTestAttachment, but we can still save the screenshot
+            Console.WriteLine($"Screenshot saved: {destFileName}");
 
             fileInfo = new FileInfo(destFileName);
         }
         else
         {
-            TestContext.AddTestAttachment(fileInfo.FullName, stepName);
+            // TUnit doesn't have AddTestAttachment, but we can still save the screenshot
+            Console.WriteLine($"Screenshot saved: {fileInfo.FullName}");
         }
 
         return fileInfo;
