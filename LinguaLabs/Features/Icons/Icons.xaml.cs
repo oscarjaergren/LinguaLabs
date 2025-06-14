@@ -1,26 +1,12 @@
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 using System.ComponentModel;
 
 namespace LinguaLabs.Features.Icons;
 
-public sealed partial class Icons : Flyout, INotifyPropertyChanged
+public sealed partial class Icons : Flyout
 {
-    private IIconifyService? _iconService;
-
-    public IIconifyService? IconService
-    {
-        get => _iconService;
-        private set
-        {
-            if (_iconService != value)
-            {
-                _iconService = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(IconService)));
-            }
-        }
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged; public Icons()
+    public Icons()
     {
         InitializeComponent();
     }

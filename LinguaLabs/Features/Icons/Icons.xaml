@@ -63,6 +63,7 @@
                                         PrimaryAxisAlignment="Center"
                                         CounterAxisAlignment="Center">                            <!-- Icon Display -->
                             <local:IconDisplay Icon="{Binding}"
+                                               IconService="{Binding DataContext.IconService, ElementName=IconsFlyout}"
                                                x:Name="IconDisplayControl" />
 
                             <!-- Icon Info -->
@@ -82,24 +83,15 @@
                         </utu:AutoLayout>
                     </Border>
                 </Button>
-            </DataTemplate>
-
-            <muxc:UniformGridLayout x:Key="ResponsiveGridLayout"
+            </DataTemplate>            <muxc:UniformGridLayout x:Key="ResponsiveGridLayout"
 								ItemsStretch="Fill"
-								MaximumRowsOrColumns="{utu:Responsive Normal=3,
-																	  Wide=6}"
-								MinColumnSpacing="{utu:Responsive Normal=8,
-																  Wide=16}"
-								MinItemWidth="{utu:Responsive Normal=120,
-															  Wide=140}"
-								MinRowSpacing="{utu:Responsive Normal=8,
-															   Wide=16}" />
-        </utu:AutoLayout.Resources>
-
-        <utu:AutoLayout Padding="{utu:Responsive Normal='16,24',
-												 Wide='40,40,40,24'}"
+								MaximumRowsOrColumns="4"
+								MinColumnSpacing="12"
+								MinItemWidth="130"
+								MinRowSpacing="12" />
+        </utu:AutoLayout.Resources>        <utu:AutoLayout Padding="20,24"
 						PrimaryAxisAlignment="Center"
-						Spacing="24">            <TextBox CornerRadius="28"
+						Spacing="24"><TextBox CornerRadius="28"
 					 PlaceholderText="Search"
 					 Text="{Binding Term, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <ut:ControlExtensions.Icon>
@@ -120,10 +112,8 @@
 					  NoneTemplate="{StaticResource EmptyTemplate}"
 					  utu:AutoLayout.PrimaryAlignment="Stretch"
 					  Source="{Binding Results}">
-            <DataTemplate>                <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                    <muxc:ItemsRepeater x:Name="SearchRepeater"
-										Margin="{utu:Responsive Normal='16,0,16,16',
-																Wide='40,0,40,40'}"
+            <DataTemplate>                <ScrollViewer VerticalScrollBarVisibility="Hidden">                    <muxc:ItemsRepeater x:Name="SearchRepeater"
+										Margin="20,0,20,20"
 										ItemTemplate="{StaticResource IconTemplate}"
 										ItemsSource="{Binding Data}"
 										Layout="{StaticResource ResponsiveGridLayout}" />

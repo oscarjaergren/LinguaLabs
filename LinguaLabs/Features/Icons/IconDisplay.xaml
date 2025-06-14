@@ -4,19 +4,18 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LinguaLabs.Features.Icons"
     x:Name="IconDisplayControl">
-      <Border Width="48"
+    <Border Width="48"
             Height="48"
             Background="{ThemeResource AccentFillColorSecondaryBrush}"
             CornerRadius="6"
             HorizontalAlignment="Center">
-
         <Grid>
             <!-- Loading state -->
             <ProgressRing x:Name="LoadingRing"
                           Width="24"
                           Height="24"
-                          IsActive="True"
-                          Visibility="Collapsed" />
+                          IsActive="{Binding IconState.Data.IsLoading, FallbackValue=False}"
+                          Visibility="{Binding IconState.Data.IsLoading, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
 
             <!-- SVG Icon -->
             <Image x:Name="IconImage"
@@ -25,7 +24,8 @@
                    VerticalAlignment="Center"
                    Width="32"
                    Height="32"
-                   Visibility="Collapsed" />
+                   Source="{Binding IconState.Data.ImageSource}"
+                   Visibility="{Binding IconState.Data.ShowImage, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Collapsed}"/>
 
             <!-- Fallback Text -->
             <TextBlock x:Name="FallbackText"
@@ -34,7 +34,8 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"
-                       Visibility="Visible" />
+                       Text="{Binding IconState.Data.FallbackText, FallbackValue=??}"
+                       Visibility="{Binding IconState.Data.ShowFallback, Converter={StaticResource BoolToVisibilityConverter}, FallbackValue=Visible}"/>
         </Grid>
     </Border>
 </UserControl>

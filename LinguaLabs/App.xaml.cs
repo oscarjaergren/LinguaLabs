@@ -2,6 +2,7 @@ using Uno.Resizetizer;
 using LinguaLabs.Features.Icons;
 
 namespace LinguaLabs;
+
 public partial class App : Application
 {
     /// <summary>
@@ -11,7 +12,8 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-    }    protected Window? MainWindow { get; private set; }
+    }
+    protected Window? MainWindow { get; private set; }
     public IHost? Host { get; private set; }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
@@ -74,8 +76,8 @@ public partial class App : Application
                 .UseHttp((context, services) =>
                 {
 #if DEBUG
-                // DelegatingHandler will be automatically injected
-                services.AddTransient<DelegatingHandler, DebugHttpHandler>();
+                    // DelegatingHandler will be automatically injected
+                    services.AddTransient<DelegatingHandler, DebugHttpHandler>();
 #endif
                     services.AddSingleton<IWeatherCache, WeatherCache>();
                     services.AddKiotaClient<WeatherServiceClient>(
@@ -86,7 +88,7 @@ public partial class App : Application
                 })
                 .UseAuthentication(auth =>
     auth.AddWeb(name: "WebAuthentication")
-                )                .ConfigureServices((context, services) =>
+                ).ConfigureServices((context, services) =>
                 {
                     // TODO: Register your services
                     //services.AddSingleton<IMyService, MyService>();
@@ -117,14 +119,14 @@ public partial class App : Application
                 }
             });
     }
-
     private static void RegisterRoutes(IViewRegistry views, IRouteRegistry routes)
     {
         views.Register(
             new ViewMap(ViewModel: typeof(ShellModel)),
             new ViewMap<LoginPage, LoginModel>(),
             new ViewMap<MainPage, MainModel>(),
-            new DataViewMap<SecondPage, SecondModel, Entity>()
+            new DataViewMap<SecondPage, SecondModel, Entity>(),
+            new ViewMap<Icons, IconsModel>()
         );
 
         routes.Register(
@@ -134,6 +136,7 @@ public partial class App : Application
                     new ("Login", View: views.FindByViewModel<LoginModel>()),
                     new ("Main", View: views.FindByViewModel<MainModel>(), IsDefault:true),
                     new ("Second", View: views.FindByViewModel<SecondModel>()),
+                    new ("Icons", View: views.FindByViewModel<IconsModel>()),
                 ]
             )
         );
