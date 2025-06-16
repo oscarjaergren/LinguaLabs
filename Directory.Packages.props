@@ -6,15 +6,15 @@
     See https://aka.platform.uno/using-uno-sdk#implicit-packages for more information regarding the Implicit Packages.
   -->  <ItemGroup>    <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="8.3.0" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="NSubstitute" Version="5.3.0" />
-    <PackageVersion Include="TUnit" Version="0.1.984" />
+    <PackageVersion Include="TUnit" Version="0.25.21" />
     <PackageVersion Include="TUnit.Engine.SourceGenerator" Version="0.1.984" />
     <PackageVersion Include="GitHubActionsTestLogger" Version="2.4.1" />
     <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageVersion Include="Serilog.AspNetCore" Version="9.0.0" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="8.1.2" />
-    <PackageVersion Include="Uno.UITest.Helpers" Version="1.1.0-dev.70" />
+    <PackageVersion Include="Uno.UITest.Helpers" Version="1.1.0-dev.82" />
     <PackageVersion Include="Xamarin.UITest" Version="4.4.2" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
     <PackageVersion Include="Microsoft.Maui.Controls.Compatibility" Version="$(MauiVersion)" />
